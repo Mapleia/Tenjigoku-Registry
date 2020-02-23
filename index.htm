@@ -83,17 +83,17 @@
             margin: 10px 10px 10px;
             padding: 5px 5px 5px;
         }
-        .TWIN {
-            display: none;
-        }
     </style>
     <h1>HARPG Breeding Roller</h1>
     <div id="wrapper">
         <section class="subcontainer">
             <div class="inputtab">
                 <h2>Foal</h2>
-                <label for="foalID">Foal ID:</label>
-                <input id="foalID" type="text" placeholder="Enter foal ID here" autocomplete="off" required />
+                <label for="foalID1">Foal ID #1:</label>
+                <input id="foalID1" type="text" placeholder="Enter foal ID here" autocomplete="off" required />
+                <br>
+                <label for="foalID2">Foal ID #2:</label>
+                <input id="foalID2" type="text" placeholder="Enter twin foal ID here" autocomplete="off" required />
                 <br>
                 <label for="ChristmasBreedingSeason">Christmas Breeding Season</label>
                 <input type="checkbox" id="ChristmasBreedingSeason" />
@@ -144,39 +144,13 @@
                     }
                 </script>
                 <p id="Annoucement"></p>
-                <p id="outputID"></p>
-                <p class="TWIN" id="twin1"></p>
-                <p id="fatal1"></p>
-                <p id="pheno1"></p>
-                <p id="result1"></p>
-                <p id="ORSHOW1"></p>
-                <p id="fatal2"></p>
-                <p id="pheno2"></p>
-                <p id="result2"></p>
-                <p id="ORSHOW2"></p>
-                <p id="fatal3"></p>
-                <p id="pheno3"></p>
-                <p id="result3"></p>
-                <div class="TWIN">
-                    <p id="twin2"></p>
-                    <p id="fatal4"></p>
-                    <p id="pheno4"></p>
-                    <p id="result4"></p>
-                    <p>OR</p>
-                    <p id="fatal5"></p>
-                    <p id="pheno5"></p>
-                    <p id="result5"></p>
-                    <p>OR</p>
-                    <p id="fatal6"></p>
-                    <p id="pheno6"></p>
-                    <p id="result6"></p>
-                </div>
-
+                <div id="twinDiv1"></div>
+                <div id="twinDiv2"></div>
             </div>
         </section>
 
         <div>
-            <button id="FoalResult" onclick="foalSUMBIT()">Roll for your foal!</button>
+            <button id="FoalResult" onclick="main()">Roll for your foal!</button>
             <button onclick="location.reload()">Clear Form</button>
         </div>
     </div>
@@ -184,6 +158,6 @@
         <p>Copyright &copy; 2019 Mapleia</p>
     </footer>
 
-    <script src="breedroller.js"></script>
+    <script src="main_roller.js"></script>
 </body>
 </html>

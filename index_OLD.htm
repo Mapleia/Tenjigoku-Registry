@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>HARPG Breeding Roller</title>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+<body>
+    <style>
+        body {
+            font-family: Dekiru;
+            text-align: center;
+            color: #ab9dfc;
+        }
+
+        h1 {
+            font-size: 50px;
+            margin: 0px 0px 0px 50px 0px;
+        }
+
+        h2 {
+            border-bottom: 7px solid #615eb2;
+        }
+
+        label {
+            padding: 5px;
+            margin: 5px 5px 5px;
+        }
+
+        input {
+            font-family: Dekiru;
+            padding: 5px;
+            margin: 5px 5px 5px;
+        }
+
+        button {
+            text-align: center;
+            height: auto;
+            padding: 14px 30px;
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: 1px solid #ab9dfc !important;
+            letter-spacing: 0.03em;
+            font-size: 12px;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        #wrapper {
+            justify-content: center;
+        }
+
+        .subcontainer {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #foaltab {
+            padding: 10px;
+            min-width: 300px;
+            width: auto;
+            min-height: 525px;
+            margin: 5px 10px 10px;
+            border: 2px #ab9dfc solid;
+            background: #201d67;
+            box-shadow: 0 0 5px #ab9dfc;
+        }
+
+        .inputtab {
+            padding: 10px;
+            width: 300px;
+            margin: 5px 10px 10px;
+            border: 2px #ab9dfc solid;
+            background: #201d67;
+            box-shadow: 0 0 5px #ab9dfc;
+        }
+
+        #selectable {
+            width: auto;
+            height: auto;
+            min-height: 420px;
+            background: #454191;
+            margin: 10px 10px 10px;
+            padding: 5px 5px 5px;
+        }
+        #twinDiv1 {
+            display: none;
+        }
+        #twin1 {
+            display: none;
+        }
+        #twinDiv2 {
+            display: none;
+        }
+        .OR {
+            display: none;
+        }
+    </style>
+    <h1>HARPG Breeding Roller</h1>
+    <div id="wrapper">
+        <section class="subcontainer">
+            <div class="inputtab">
+                <h2>Foal</h2>
+                <label for="foalID1">Foal ID #1:</label>
+                <input id="foalID1" type="text" placeholder="Enter foal ID here" autocomplete="off" required />
+                <br>
+                <label for="foalID2">Foal ID #2:</label>
+                <input id="foalID2" type="text" placeholder="Enter twin foal ID here" autocomplete="off" required />
+                <br>
+                <label for="ChristmasBreedingSeason">Christmas Breeding Season</label>
+                <input type="checkbox" id="ChristmasBreedingSeason" />
+            </div>
+            <div class="inputtab">
+                <h2 class="borderyes">Dam</h2>
+                <label for="DamGeno">Geno</label>
+                <input id="DamGeno" type="text" placeholder="Enter geno here" autocomplete="off" required />
+                <br>
+                <label for="DamChimeraCheck">Chimera</label>
+                <input type="checkbox" id="DamChimeraCheck" />
+                <input type="text" id="DamChimera" placeholder="Enter chimera geno here" autocomplete="off" disabled />
+                <script>
+                    document.getElementById('DamChimeraCheck').onchange = function () {
+                        document.getElementById('DamChimera').disabled = !this.checked;
+                    };
+                </script>
+            </div>
+            <div class="inputtab">
+                <h2>Sire</h2>
+                <label for="SireGeno">Geno</label>
+                <input id="SireGeno" type="text" placeholder="Enter geno here" autocomplete="off" required />
+                <br>
+                <label for="SireChimeraCheck">Chimera</label>
+                <input type="checkbox" id="SireChimeraCheck" />
+                <input type="text" id="SireChimera" placeholder="Enter chimera geno here" autocomplete="off" disabled />
+                <script>
+                    document.getElementById('SireChimeraCheck').onchange = function () {
+                        document.getElementById('SireChimera').disabled = !this.checked;
+                    };</script>
+            </div>
+        </section>
+        <section class="subcontainer" id="foaltab">
+            <h2>Outcome</h2>
+            <div id="selectable" onclick="selectText('selectable')">
+                <script>
+                    function selectText(containerid) {
+                        if (document.selection) { // IE
+                            var range = document.body.createTextRange();
+                            range.moveToElementText(document.getElementById(containerid));
+                            range.select();
+                        } else if (window.getSelection) {
+                            var range = document.createRange();
+                            range.selectNode(document.getElementById(containerid));
+                            window.getSelection().removeAllRanges();
+                            window.getSelection().addRange(range);
+                        }
+                    }
+                </script>
+                <p id="Annoucement"></p>
+                <div id="twinDiv1">
+                    <p id="twin1">TWIN 1:</p>
+                    <p id="outputID1"></p>
+                    <p id="fatal1"></p>
+                    <b>Phenotype: </b><p id="pheno1"></p>
+                    <b>Genotype: </b><p id="geno1"></p>
+                    <p>OR</p>
+                    <p id="fatal2"></p>
+                    <b>Phenotype: </b><p id="pheno2"></p>
+                    <b>Genotype: </b><p id="geno2"></p>
+                    <p>OR</p>
+                    <p id="fatal3"></p>
+                    <b>Phenotype: </b><p id="pheno3"></p>
+                    <b>Genotype: </b><p id="geno3"></p>
+                </div>
+                <div id="twinDiv2">
+                    <p>TWIN 2:</p>
+                    <p id="outputID2"></p>
+                    <p id="fatal4"></p>
+                    <b>Phenotype: </b><p id="pheno4"></p>
+                    <b>Genotype: </b><p id="geno4"></p>
+                    <p>OR</p>
+                    <p id="fatal5"></p>
+                    <b>Phenotype: </b><p id="pheno5"></p>
+                    <b>Genotype: </b><p id="geno5"></p>
+                    <p>OR</p>
+                    <p id="fatal6"></p>
+                    <b>Phenotype: </b><p id="pheno6"></p>
+                    <b>Genotype: </b><p id="geno6"></p>
+                </div>
+            </div>
+        </section>
+
+        <div>
+            <button id="FoalResult" onclick="main()">Roll for your foal!</button>
+            <button onclick="location.reload()">Clear Form</button>
+        </div>
+    </div>
+    <footer>
+        <p>Copyright &copy; 2019 Mapleia</p>
+    </footer>
+
+    <script src="main_roller.js"></script>
+</body>
+</html>
