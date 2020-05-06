@@ -29,8 +29,8 @@ const normalMut = [
     ["OkuOku", "nOku"], // Christmas Mutation
     ["ShoSho", "nSho"], // Christmas Mutation
     ["YuYu", "nYu"],    // Halloween Mutation
-    ["OmOm", "nOm"], // OmOm nOm is in the regular gene roller array
-    ["RabRab", "nRab"], // RabRab nRab is in the halloween roller array
+    // ["OmOm", "nOm"], // OmOm nOm is in the regular gene roller array
+    // ["RabRab", "nRab"], // RabRab nRab is in the halloween roller array
     ["KagKag", "nKag"], ["BeBe", "nBe"], ["TanTan", "nTan"], 
     ["HiHi", "nHi"], ["DoDo", "nDo"], ["OnOn", "nOn"], ["NuiNui", "nNui"], 
     ["ZonZon", "nZon"], ["ShaSha", "nSha"], ["ShinShin", "nShin"]
@@ -44,131 +44,65 @@ const AlleleArr = ["PATN1", "PATN2", "snow", "roan"];
 function main() {
 
     var twinChance = Math.floor(Math.random() * 100);
-    console.log("The chance for twin that was rolled: " + twinChance);
-
+    console.log("TwinChance is: " + twinChance);
+    
     var twinMin = 60;
     var twinMax = 71;
 
+    // Christmas Season increases the chance by +10.
     var isXmasSeason = document.getElementById("ChristmasBreedingSeason").checked;
     if (isXmasSeason == true) {
         twinMax = twinMax + 10; // 81
-    }    
+    }   
 
-    const foalID1 = document.getElementById("foalID1").value;
+    // First (if applicable) foal's ID.
+    document.getElementById("resultID1").innerHTML = document.getElementById("foalID1").value;
+    var allFoalsT1 = document.getElementsByClassName("foal");
 
-    const div1 = document.getElementById("twinDiv1");
-    div1.innerHTML = "";
+    // Display all OR elements.
+    var allOr = document.getElementsByClassName("or");
+    for (var j = 0; j < allOr.length; j++) {
+        allOr[j].style.display = "block";
+    }
 
-    const div2 = document.getElementById("twinDiv2");
-    div2.innerHTML = "";
+    // Roll the foal #1's geno and pheno. Loop through "foal" class.
+    for (var i = 0; i < allFoalsT1.length; i++) {
+        // Twin 1 Loop 3 times
+        foalResultT1 = foalIndividual();
 
-    const foalResult1 = foalIndividual();
-    var genoTxt1 = foalResult1[0];
-    var phenoTxt1 = foalResult1[1];
+        var foalGenoT1 = "<strong>Genotype:</strong> " + foalResultT1[0] + "<br>";
+        var foalPhenoT1 = "<strong>Phenotype:</strong> " + foalResultT1[1] + "<br>";
+        var foalDeadT1 = lethalOmoide(foalResultT1[0]);
+            
+        allFoalsT1[i].innerHTML = foalGenoT1 + foalPhenoT1 + foalDeadT1;
+    }
 
+    // If roll for twins is successful, roll foal #2's geno and pheno. Loop through "twin" class.
     if ((twinMin < twinChance) && (twinChance < twinMax)) {
+        document.getElementById("twinDiv2").style.display = "inline"; // If hidden from before, show now.
+
+        // Announcement for successful twin roll.
         document.getElementById("Annoucement").innerHTML = "You have successfully rolled for twins!";
         
-        // TWIN 1 + ID
-        var twinNumNode1 = document.createElement("P");
-        twinNumNode1.innerHTML = "TWIN #1" + " - " + foalID1;
-        div1.appendChild(twinNumNode1);
+        // Twin ID numbers.
+        document.getElementById("resultID1").innerHTML = "TWIN #1 - " + document.getElementById("foalID1").value;
+        document.getElementById("resultID2").innerHTML = "TWIN #2 - " + document.getElementById("foalID2").value;
 
-        for (var i = 0; i <= 3; i++) {
-            // GENOTYPE
-            var genoNode = document.createElement("P");
-            genoNode.innerHTML = genoTxt1[i];
-            div1.appendChild(genoNode);
+        var allFoalsT2 = document.getElementsByClassName("twin");
 
-            // PHENOTYPE
-            var phenoNode = document.createElement("P");
-            phenoNode.innerHTML = phenoTxt1[i];
-            div1.appendChild(phenoNode);
+        for (var j = 0; j < allFoalsT2.length; j++) {
+            // Twin 2 Loop through all "twin" <p>.
+            foalResultT2 = foalIndividual();
 
-            // DEAD?
-            if (lethalOmoide(genoTxt1[i]) != "") {
-                var fatalNode = document.createElement("P");
-                fatalNode.innerHTML = lethalOmoide(genoTxt1[i]);
-                div1.appendChild(fatalNode);
-            }
-
-            // OR LOOP
-            if ( i < 3) {
-                var OrNode = document.createElement("P");
-                OrNode.innerHTML = "OR";
-                div1.appendChild(OrNode);
-            }
+            var foalGenoT2 = "<strong>Genotype:</strong> " + foalResultT2[0] + "<br>";
+            var foalPhenoT2 = "<strong>Phenotype:</strong> " + foalResultT2[1] + "<br>";
+            var foalDeadT2 = lethalOmoide(foalResultT2[0]);
+            
+            allFoalsT2[j].innerHTML = foalGenoT2 + foalPhenoT2 + foalDeadT2;
         }
-
-        // TWIN 2 + ID
-
-        const foalID2 = document.getElementById("foalID2").value;
-
-        const foalResult2 = foalIndividual();
-        var genoTxt2 = foalResult2[0];
-        var phenoTxt2 = foalResult2[1];
-
-        var twinNumNode2 = document.createElement("P");
-        twinNumNode2.innerHTML = "TWIN #2" + " - " + foalID2;
-        div2.appendChild(twinNumNode2);
-
-        for (var j = 0; j <= 3; j++) {
-            // GENOTYPE
-            var genoNode2 = document.createElement("P");
-            genoNode2.innerHTML = genoTxt2[j];
-            div2.appendChild(genoNode2);
-
-            // PHENOTYPE
-            var phenoNode2 = document.createElement("P");
-            phenoNode2.innerHTML = phenoTxt2[j];
-            div2.appendChild(phenoNode2);
-
-            // DEAD?
-            if (lethalOmoide(genoTxt2[j]) != "") {
-                var fatalNode2 = document.createElement("P");
-                fatalNode2.innerHTML = lethalOmoide(genoTxt2[j]);
-                div2.appendChild(fatalNode2);
-            }
-
-            // OR LOOP
-            if ( j < 3) {
-                var OrNode2 = document.createElement("P");
-                OrNode2.innerHTML = "OR";
-                div2.appendChild(OrNode2);
-            }
-        }
-
-    } else {
+    } else { // Announce the failure of the twin roll and hide the twin div.
         document.getElementById("Annoucement").innerHTML = "Roll for twins has failed to pass.";
-        var IDNode = document.createElement("P");
-        IDNode.innerHTML = foalID1;
-        div1.appendChild(IDNode);
-        
-        for (var i = 0; i <= 3; i++) {
-            // GENOTYPE
-            var genoNode3 = document.createElement("P");
-            genoNode3.innerHTML = genoTxt1[i];
-            div1.appendChild(genoNode3);
-
-            // PHENOTYPE
-            var phenoNode3 = document.createElement("P");
-            phenoNode3.innerHTML = phenoTxt1[i];
-            div1.appendChild(phenoNode3);
-
-            // DEAD?
-            if (lethalOmoide(genoTxt1[i]) != "") {
-                var fatalNode3 = document.createElement("P");
-                fatalNode3.innerHTML = lethalOmoide(genoTxt1[i]);
-                div1.appendChild(fatalNode3);
-            }
-
-            // OR LOOP
-            if ( i < 3) {
-                var OrNode3 = document.createElement("P");
-                OrNode3.innerHTML = "OR";
-                div1.appendChild(OrNode3);
-            }
-        }    
+        document.getElementById("twinDiv2").style.display = "none";
     }
 
 }
@@ -189,38 +123,33 @@ function foalIndividual() {
     var chimeraMin = 60;
     var chimeraMax = 69;
 
-    var genoTxt = [];
-    var phenoTxt = [];
+    var resultsArr = [];
 
-    for (var i = 0; i <= 3; i++) {
-        var chimeraChance = Math.floor(Math.random() * 100);
-        if ((chimeraMin < chimeraChance) && (chimeraChance < chimeraMax)) {
-            var genoArr1 = foalGenotype();
-            var geno1 = genoArr1.join(" ");
-            geno1 = geno1.trim();
-            var genoArr2 = foalGenotype(); 
-            var geno2 = genoArr2.join(" ");
-            geno2 = geno2.trim();                   
-            genoTxt.push("<b>Genotype: </b>" + geno1 + " // " + geno2);
+    var chimeraChance = Math.floor(Math.random() * 100);
+    if ((chimeraMin < chimeraChance) && (chimeraChance < chimeraMax)) {
+        var genoArr1 = foalGenotype();
+        var geno1 = genoArr1.join(" ");
+        geno1 = geno1.trim();
+        var genoArr2 = foalGenotype(); 
+        var geno2 = genoArr2.join(" ");
+        geno2 = geno2.trim();                   
+        resultsArr.push(geno1 + " // " + geno2);
 
-            var pheno1 = foalPhenotype(genoArr1);
-            var pheno2 = foalPhenotype(genoArr2);
-            phenoTxt.push("<b>Phenotype: </b>" + pheno1 + " // " + pheno2 + " Chimera");
+        var pheno1 = foalPhenotype(genoArr1);
+        var pheno2 = foalPhenotype(genoArr2);
+        resultsArr.push(pheno1 + " // " + pheno2 + " Chimera");
             
-        } else {
-            var genoArr3 = foalGenotype();
-            var geno3 = genoArr3.join(" ");
-            geno3 = geno3.trim();
-            genoTxt.push("<b>Genotype: </b>" + geno3);
+    } else {
+        var genoArr3 = foalGenotype();
+        var geno3 = genoArr3.join(" ");
+        geno3 = geno3.trim();
+        resultsArr.push(geno3);
 
-            var pheno3 = foalPhenotype(genoArr3);
-            phenoTxt.push("<b>Phenotype: </b>" + pheno3);
-        }
+        var pheno3 = foalPhenotype(genoArr3);
+        resultsArr.push(pheno3);
     }
 
-    var temp = [];
-    temp.push(genoTxt, phenoTxt);
-    return temp;
+    return resultsArr;
 }
 
 // Replace every instance of Gene.n (Gene/No Gene) with n.Gene
@@ -302,28 +231,14 @@ function countInArray(array, what) {
     Carriers (Silver, Flaxen, Mushroom, Pearl, Pangare) ---!!  */
 // Array -> String
 function foalPhenotype(foalGeno) {
-    console.log(foalGeno);
-    console.log(typeof(foalGeno));
-
     var phenoArr = [];
 
     albinoPhenoRoll(phenoArr);
-    console.log(phenoArr);
-
     regPheno(phenoArr, foalGeno);
-    console.log(phenoArr);
-
     regMutPheno(phenoArr, foalGeno);
-    console.log(phenoArr);
-
     randomTraitPheno(phenoArr);
-    console.log(phenoArr);
-
     manchadoPheno(phenoArr);
-    console.log(phenoArr);
-
     carrierPheno(phenoArr, foalGeno);
-    console.log(phenoArr);
 
     var foalPhenoStr = phenoArr.join(" ");
     foalPhenoStr = foalPhenoStr.trim();
@@ -433,15 +348,15 @@ function regPheno(foalArr, foalGeno) {
 function basePheno(foalArr, foalGeno) {
     const wildBay = ["A+A+", "A+A", "A+At", "A+a"];
     const bay = ["AA", "AAt", "Aa"];
-    const sealBrown = ["AtAt", "Ata"];
+    const sealBay = ["AtAt", "Ata"];
 
     if (foalGeno.includes("Ee") || foalGeno.includes("EE")){
         if (arr2HasArr1(wildBay, foalGeno)) {
             foalArr.push("Wild Bay ");
         } else if (arr2HasArr1(bay, foalGeno)) {
             foalArr.push("Bay ");
-        } else if (arr2HasArr1(sealBrown, foalGeno)) {
-            foalArr.push("Seal Brown ");
+        } else if (arr2HasArr1(sealBay, foalGeno)) {
+            foalArr.push("Seal Bay ");
         } else {
             foalArr.push("Black ");
         }
@@ -473,7 +388,6 @@ nRn or nR or RR or RnRn --------> (Blue Roan / Red Roan / Wild Bay Roan / Bay Ro
 function dilutePheno(foalArr, foalGeno) {
     var index;
     if (foalGeno.includes("nCh") || foalGeno.includes("ChCh")) {
-        console.log(foalArr);
         if (foalArr.includes("Black ")) {
             foalArr.push("Classic ", "Champagne ");
         } else if (foalArr.includes("Chestnut ")) {
@@ -482,7 +396,7 @@ function dilutePheno(foalArr, foalGeno) {
             foalArr.push("Wild Amber ", "Champagne ");
         } else if (foalArr.includes("Bay ")) {
             foalArr.push("Amber ", "Champagne ");
-        } else if (foalArr.includes("Seal Brown ")) {
+        } else if (foalArr.includes("Seal Bay ")) {
             foalArr.push("Sable ", "Champagne ");
         }
         if (foalGeno.includes("nCr") || foalGeno.includes("CrCr")) {
@@ -492,7 +406,6 @@ function dilutePheno(foalArr, foalGeno) {
         addRoanorDun(foalArr, foalGeno);
 
     } else if (foalGeno.includes("CrCr")) {
-        console.log(foalArr);
 
         if (foalArr.includes("Black ")) {
             index = foalArr.indexOf("Black ");
@@ -509,14 +422,13 @@ function dilutePheno(foalArr, foalGeno) {
             index = foalArr.indexOf("Bay ");
             foalArr.splice(index, 1, "Perlino ");
 
-        } else if (foalArr.includes("Seal Brown ")) {
-            index = foalArr.indexOf("Seal Brown ");
+        } else if (foalArr.includes("Seal Bay ")) {
+            index = foalArr.indexOf("Seal Bay ");
             foalArr.splice(index, 1, "Burnt Perlino ");
         }
         addRoanorDun(foalArr, foalGeno);
 
     } else if (foalGeno.includes("nCr") || foalGeno.includes("Crprl")) {
-        console.log(foalArr);
 
         if (foalGeno.includes("DᴺˢD")  || foalGeno.includes("nDᴺˢ")) {
             foalArr.push("Nobashita ");
@@ -541,9 +453,9 @@ function dilutePheno(foalArr, foalGeno) {
             index = foalArr.indexOf("Bay ");
             foalArr.splice(index, 1, "Buckskin ");
 
-        } else if (foalArr.includes("Seal Brown ")) {
+        } else if (foalArr.includes("Seal Bay ")) {
 
-            index = foalArr.indexOf("Seal Brown ");
+            index = foalArr.indexOf("Seal Bay ");
             foalArr.splice(index, 1, "Burnt");
             foalArr.push("Buckskin ");
         }
@@ -582,7 +494,6 @@ function dilutePheno(foalArr, foalGeno) {
             foalArr.push("Pearl ")
         }
     } else if (foalGeno.includes("nD") || foalGeno.includes("DD") || foalGeno.includes("DᴺˢD")  || foalGeno.includes("nDᴺˢ")) {
-        console.log(foalArr);
 
         if (foalGeno.includes("DᴺˢD")  || foalGeno.includes("nDᴺˢ")) {
             foalArr.push("Nobashita ");
@@ -604,8 +515,8 @@ function dilutePheno(foalArr, foalGeno) {
             index = foalArr.indexOf("Bay ");
             foalArr.splice(index, 1, "Bay Dun ");
 
-        } else if (foalArr.includes("Seal Brown ")) {
-            index = foalArr.indexOf("Seal Brown ");
+        } else if (foalArr.includes("Seal Bay ")) {
+            index = foalArr.indexOf("Seal Bay ");
             foalArr.splice(index, 1, "Burnt Bay Dun ");
         }
         if (foalGeno.includes("nRn") || foalGeno.includes("RnRn") ) {
@@ -614,10 +525,8 @@ function dilutePheno(foalArr, foalGeno) {
             foalArr.push("Roan ");
         }
     } else if (foalGeno.includes("nRn") || foalGeno.includes("RnRn") ) {
-        console.log(foalArr);
         allofRoan(foalArr);
     } else if (foalGeno.includes("nR") || foalGeno.includes("RR") ) {
-        console.log(foalArr);
         allofRoan(foalArr);
     }
 }
@@ -667,7 +576,7 @@ function allofRoan(foalArr) {
         foalArr.push("Wild Bay Roan ");
     } else if (foalArr.includes("Bay ")) {
         foalArr.push("Bay Roan ");
-    } else if (foalArr.includes("Seal Brown ")) {
+    } else if (foalArr.includes("Seal Bay ")) {
         foalArr.push("Burnt Bay Roan ");
     }
 }
@@ -757,15 +666,13 @@ function regMutPheno(foalArr, foalGeno) {
         "Seiunten ", "Shima ", "Sōgyō ", "Taika ", 
         "Tōrō ", "Tsunami ", "Yamaneko ",
         "Ametsue ", "Fubuki ", "Okurimono ", "Shogapan ", 
-        "Yūreiji ", "Omoide ", "Rabendā ",
+        "Yūreiji ", 
+        // "Omoide ", "Rabendā ",
         "Kage ", "Beju ", "Tanjoutama ", 
         "Hitodama ", "Dokurōkashi ", "Oni ", "Nuime ",
         "Zonbi ", "Shanikusai ", "Shinigami "
     ];
     for (var i = 0; i < normalMut.length; i++) {
-        console.log(normalMut[i]);
-        console.log(normalMut[i][0]);
-        console.log(normalMut[i][1]);
 
         if (foalGeno.includes(normalMut[i][0])) {
             foalArr.push(phenoMut[i]);
@@ -775,6 +682,14 @@ function regMutPheno(foalArr, foalGeno) {
             continue;
         }
     }
+
+    if (foalGeno.includes("OmOm") || foalGeno.includes("nOm")) {
+        foalArr.push("Omoide ");
+    }
+    if (foalGeno.includes("RabRab") || foalGeno.includes("nRab")) {
+        foalArr.push("Rabendā ");
+    }
+
     return;
 }
 
@@ -898,7 +813,7 @@ function extGeneRoll(parArr1, parArr2, foalArr) {
 }
 
 /* Agouti gene roller. Follows regular gene passing probability. 
-    At => Seal Brown
+    At => Seal Bay
     A  => Bay
     A+ => Wild Bay
     a  => Black or chestnut depending on if there is Ee/EE or ee.
